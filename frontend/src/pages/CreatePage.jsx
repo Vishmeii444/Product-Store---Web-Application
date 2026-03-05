@@ -8,8 +8,8 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useColorModeValue } from "@/components/ui/color-mode";
-// import { toaster } from "@/components/ui/toaster";
 import { useProductStore } from "@/store/book.js";
+import { toaster } from "@/components/ui/toaster";
 
 const CreatePage = () => {
   const [newBook, setNewBook] = useState({
@@ -18,12 +18,20 @@ const CreatePage = () => {
     image: "",
   });
 
-  const {createProduct} = useProductStore();
+  const { createProduct } = useProductStore();
 
-  const handleAddBook = async() => {
-    const {success, message} = await createProduct(newBook);
-    console.log("Success:", success);
-    console.log("Message:", message);
+  const handleAddBook = async () => {
+    const { success, message } = await createProduct(newBook);
+    
+    toaster.create({
+      title: success ? "Success" : "Error",
+      description: message,
+      type: success ? "success" : "error",
+    });
+
+    if (success) {
+      setNewBook({ name: "", price: "", image: "" });
+    }
   };
 
   return (
@@ -45,9 +53,7 @@ const CreatePage = () => {
               placeholder="Book Name"
               name="name"
               value={newBook.name}
-              onChange={(e) =>
-                setNewBook({ ...newBook, name: e.target.value })
-              }
+              onChange={(e) => setNewBook({ ...newBook, name: e.target.value })}
             />
             <Input
               placeholder="Price"
