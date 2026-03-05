@@ -8,7 +8,8 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useColorModeValue } from "@/components/ui/color-mode";
-import { toaster } from "@/components/ui/toaster";
+// import { toaster } from "@/components/ui/toaster";
+import { useProductStore } from "@/store/book.js";
 
 const CreatePage = () => {
   const [newBook, setNewBook] = useState({
@@ -17,17 +18,12 @@ const CreatePage = () => {
     image: "",
   });
 
-  const handleAddBook = () => {
-    if (!newBook.name || !newBook.price || !newBook.image) {
-      toaster.create({
-        title: "Error",
-        description: "Please fill in all fields",
-        type: "error",
-      });
-      return;
-    }
-    console.log("Adding book:", newBook);
-    // Logic to send to backend goes here
+  const {createProduct} = useProductStore();
+
+  const handleAddBook = async() => {
+    const {success, message} = await createProduct(newBook);
+    console.log("Success:", success);
+    console.log("Message:", message);
   };
 
   return (

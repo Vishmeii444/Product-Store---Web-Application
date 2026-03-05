@@ -1,4 +1,4 @@
-import {create} from "zustand";
+import { create } from "zustand";
 
 export const useProductStore = create((set) => ({
     books: [],
@@ -15,5 +15,7 @@ export const useProductStore = create((set) => ({
             body:JSON.stringify(newBook)
         })
         const data = await res.json();
+        set((state) => ({books:[...state.books, data.data]}));
+        return {success: true, message: "Product created successfully."}
     }
 }));
