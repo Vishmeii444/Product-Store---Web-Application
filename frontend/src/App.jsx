@@ -6,6 +6,7 @@ import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
 
 function App() {
+
   return (
     <Box minH={"100vh"} bg={useColorModeValue("gray.100", "gray.900")}>{/*light and dark modes*/}
       <Navbar/> {/* We put this here so that it gets placed above all the other content*/}
