@@ -1,14 +1,17 @@
-import { Button } from"@chakra-ui/react";
+import { Box } from"@chakra-ui/react";
+import { Route, Routes} from 'react-router-dom';
+
+import CreatePage from "./pages/CreatePage";
+import HomePage from "./pages/HomePage";
+import Navbar from "./components/Navbar";
 
 function App() {
-
   return (
-    <Box minH={"100vh"}>
-      {/*Navbar*/}
+    <Box minH={"100vh"} bg={useColorModeValue("gray.100", "gray.900")}>{/*light and dark modes*/}
+      <Navbar/> {/* We put this here so that it gets placed above all the other content*/}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/create" element={<CreatePage />} />
-
         </Routes>
     </Box>
   );
