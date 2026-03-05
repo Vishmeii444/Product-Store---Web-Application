@@ -1,53 +1,78 @@
-import { useColorModeValue } from "@/components/ui/color-mode";
 import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  Container,
+  Heading,
+  Input,
+  VStack,
+} from "@chakra-ui/react";
+import { useColorModeValue } from "@/components/ui/color-mode";
+import { toaster } from "@/components/ui/toaster";
 
 const CreatePage = () => {
-  const [newProduct, setNewProduct] = useState({
+  const [newBook, setNewBook] = useState({
     name: "",
     price: "",
     image: "",
   });
 
+  const handleAddBook = () => {
+    if (!newBook.name || !newBook.price || !newBook.image) {
+      toaster.create({
+        title: "Error",
+        description: "Please fill in all fields",
+        type: "error",
+      });
+      return;
+    }
+    console.log("Adding book:", newBook);
+    // Logic to send to backend goes here
+  };
+
   return (
-    <Container maxW={"container.small"}>
-      <VStack spacing={8}>
+    <Container maxW={"400px"}>
+      <VStack gap={8}>
         <Heading as={"h1"} size={"2xl"} textAlign={"center"} mb={8}>
-          Create New Product
+          Create New Book
         </Heading>
 
         <Box
           w={"full"}
-          bg={useColorModeValue("white", "gray.8000")}
+          bg={useColorModeValue("white", "gray.800")}
           p={6}
-          rounder={"lg"}
+          rounded={"lg"}
           shadow={"md"}
         >
-          <VStack spacing={4}>
+          <VStack gap={4}>
             <Input
-              placeholder="Product Name"
+              placeholder="Book Name"
               name="name"
-              value={newProduct.name}
+              value={newBook.name}
               onChange={(e) =>
-                setNewProduct({ ...newProduct, name: e.target.value })
+                setNewBook({ ...newBook, name: e.target.value })
               }
             />
             <Input
               placeholder="Price"
               name="price"
               type="number"
-              value={newProduct.price}
+              value={newBook.price}
               onChange={(e) =>
-                setNewProduct({ ...newProduct, price: e.target.value })
+                setNewBook({ ...newBook, price: e.target.value })
               }
             />
             <Input
               placeholder="Image URL"
               name="image"
-              value={newProduct.image}
+              value={newBook.image}
               onChange={(e) =>
-                setNewProduct({ ...newProduct, image: e.target.value })
+                setNewBook({ ...newBook, image: e.target.value })
               }
             />
+            <Button colorPalette="blue" onClick={handleAddBook} w="full">
+              Add Book
+            </Button>
           </VStack>
         </Box>
       </VStack>
