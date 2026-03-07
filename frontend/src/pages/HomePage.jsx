@@ -33,7 +33,11 @@ const HomePage = () => {
           }}
           gap={10}
           w={"full"}
-        ></SimpleGrid>
+        >
+          {books.map((book) => (
+            <ProductCard key={book._id} book={book}/>
+          ))}
+        </SimpleGrid>
 
         <Text
           fontSize="xl"
