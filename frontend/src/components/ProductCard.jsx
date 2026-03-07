@@ -1,3 +1,4 @@
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -5,15 +6,76 @@ import {
   HStack,
   IconButton,
   Image,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
+  useColorModeValue,
+  useDisclosure,
+  useToast,
+  VStack,
 } from "@chakra-ui/react";
+import { useProductStore } from "../store/book";
+import { useState } from "react";
 import React from "react";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
-import { useColorModeValue } from "./ui/color-mode";
 
 const ProductCard = ({ book }) => {
+  const [updatedBook, setUpdatedBook] = useState(book);
+
   const textColor = useColorModeValue("gray.600", "gray.200");
   const bg = useColorModeValue("white", "gray.800");
+
+  const { deleteBook, updateBook } = useProductStore();
+  const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleDeleteBook = async (bid) => {
+    const { success, message } = await deleteBook(bid);
+    if (!success) {
+      toast({
+        title: "Error",
+        description: message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: message,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const handleUpdateBook = async (bid, updatedBook) => {
+    const { success, message } = await updateBook(bid, updatedBook);
+    onClose();
+    if (!success) {
+      toast({
+        title: "Error",
+        description: message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: "Book updated successfully",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <Box
@@ -31,32 +93,82 @@ const ProductCard = ({ book }) => {
         w="full"
         objectFit="cover"
       />
+
       <Box p={4}>
         <Heading as="h3" size="md" mb={2}>
           {book.name}
         </Heading>
+
         <Text fontWeight="bold" fontSize="xl" color={textColor} mb={4}>
           ${book.price}
         </Text>
 
-        <HStack gap={2}>
+        <HStack spacing={2}>
+          <IconButton icon={<EditIcon />} onClick={onOpen} colorScheme="blue" />
           <IconButton
-            aria-label="Edit book"
-            colorPalette="blue"
-            variant="ghost"
-          >
-            <FiEdit />
-          </IconButton>
-
-          <IconButton
-            aria-label="Delete book"
-            colorPalette="red"
-            variant="ghost"
-          >
-            <FiTrash2 />
-          </IconButton>
+            icon={<DeleteIcon />}
+            onClick={() => handleDeleteBook(book._id)}
+            colorScheme="red"
+          />
         </HStack>
       </Box>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+
+        <ModalContent>
+          <ModalHeader>Update Book</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <VStack spacing={4}>
+              <Input
+                placeholder="Book Name"
+                name="name"
+                value={updatedBook.name}
+                onChange={(e) =>
+                  setUpdatedBook({ ...updatedBook, name: e.target.value })
+                }
+              />
+              <Input
+                placeholder="Price"
+                name="price"
+                type="number"
+                value={updatedBook.price}
+                onChange={(e) =>
+                  setUpdatedBook({
+                    ...updatedBook,
+                    price: e.target.value,
+                  })
+                }
+              />
+              <Input
+                placeholder="Image URL"
+                name="image"
+                value={updatedBook.image}
+                onChange={(e) =>
+                  setUpdatedBook({
+                    ...updatedBook,
+                    image: e.target.value,
+                  })
+                }
+              />
+            </VStack>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={() => handleUpdateBook(book._id, updatedBook)}
+            >
+              Update
+            </Button>
+            <Button variant="ghost" onClick={onClose}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

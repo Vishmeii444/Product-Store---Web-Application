@@ -48,7 +48,7 @@ const HomePage = () => {
             fontWeight="bold"
             color="gray.500"
           >
-            No products found ˙◠˙{" "}
+            No books found ˙◠˙{" "}
             <Link to={"/create"}>
               <Text
                 as="span"

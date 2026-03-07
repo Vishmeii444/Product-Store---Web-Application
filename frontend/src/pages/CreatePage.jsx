@@ -18,10 +18,10 @@ const CreatePage = () => {
     image: "",
   });
 
-  const { createProduct } = useProductStore();
+  const { createBook } = useProductStore();
 
   const handleAddBook = async () => {
-    const { success, message } = await createProduct(newBook);
+    const { success, message } = await createBook(newBook);
     
     toaster.create({
       title: success ? "Success" : "Error",
