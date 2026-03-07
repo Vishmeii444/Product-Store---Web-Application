@@ -1,7 +1,20 @@
-import { Box, HStack, IconButton, Image, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Heading,
+  HStack,
+  IconButton,
+  Image,
+  Text,
+} from "@chakra-ui/react";
 import React from "react";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { useColorModeValue } from "./ui/color-mode";
 
-const ProductCard = (book) => {
+const ProductCard = ({ book }) => {
+  const textColor = useColorModeValue("gray.600", "gray.200");
+  const bg = useColorModeValue("white", "gray.800");
+
   return (
     <Box
       shadow="lg"
@@ -23,11 +36,25 @@ const ProductCard = (book) => {
           {book.name}
         </Heading>
         <Text fontWeight="bold" fontSize="xl" color={textColor} mb={4}>
-          ${ProductCard.price}
+          ${book.price}
         </Text>
-        <HStack spacing={2}>
-          <IconButton icon={<EditIcon />} colorScheme="blue" />
-          <IconButton icon={<DeleteIcon />} colorScheme="red" />
+
+        <HStack gap={2}>
+          <IconButton
+            aria-label="Edit book"
+            colorPalette="blue"
+            variant="ghost"
+          >
+            <FiEdit />
+          </IconButton>
+
+          <IconButton
+            aria-label="Delete book"
+            colorPalette="red"
+            variant="ghost"
+          >
+            <FiTrash2 />
+          </IconButton>
         </HStack>
       </Box>
     </Box>
