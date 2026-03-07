@@ -3,7 +3,7 @@ import { create } from "zustand";
 export const useProductStore = create((set) => ({
   books: [],
   setBooks: (books) => set({ books }),
-  
+
   createBook: async (newBook) => {
     if (!newBook.name || !newBook.price || !newBook.image) {
       return { success: false, message: "Please fill in all fields." };
@@ -25,15 +25,31 @@ export const useProductStore = create((set) => ({
   },
 
   deleteBook: async (pid) => {
-    // Fixed typo: was "/api/prodcts/"
     const res = await fetch(`/api/products/${pid}`, {
       method: "DELETE",
     });
     const data = await res.json();
     if (!data.success) return { success: false, message: data.message };
 
-    // Fixed typo: was "statebooks"
+    // this line updates the ui immediately when a book is deleted without refreshing
     set((state) => ({ books: state.books.filter((book) => book._id !== pid) }));
     return { success: true, message: data.message };
-  }
+  },
+
+  updateBook: async (pid, updatedBook) => {
+    const res = await fetch(`/api/products/${pid}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedBook),
+    });
+    const data = await res.json();
+    if (!data.success) return { success: false, message: data.message };
+    // this line updates the ui immediately when a book is deleted without refreshing
+    set((state) => ({
+      books: state.books.map((book) => (book._id === pid ? data.data : book)),
+    }));
+    return { success: true, message: data.message };
+  },
 }));

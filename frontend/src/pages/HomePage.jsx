@@ -23,7 +23,7 @@ const HomePage = () => {
           backgroundClip={"text"}
           color="transparent"
         >
-          Current Books 📖
+          Current Books 🕮
         </Text>
 
         <SimpleGrid
