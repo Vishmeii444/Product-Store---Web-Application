@@ -1,15 +1,18 @@
 import React from "react";
+import { Container, Text, VStack } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
-    <Container mxW="container.x1" py={12}>
-      <VStack spacing={8}>
+    <Container maxW="container.xl" py={12}>
+      <VStack gap={8}>
         <Text
           fontSize={"30"}
           fontWeight={"bold"}
           textAlign={"center"}
           background={"linear-gradient(to right, #336a29, #eaff9d)"}
           backgroundClip={"text"}
+          color="transparent"
         >
           Current Books 📖
         </Text>
@@ -20,7 +23,7 @@ const HomePage = () => {
           fontWeight="bold"
           color="gray.500"
         >
-          No products found 😢{" "}
+          No products found ˙◠˙{" "}
           <Link to={"/create"}>
             <Text
               as="span"
