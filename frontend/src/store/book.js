@@ -23,4 +23,14 @@ export const useProductStore = create((set) => ({
     const data = await res.json();
     set({ books: data.data });
   },
+  deleteProduct: async (pid) => {
+    const res = await fetch(`/api/prodcts/${pid}`, {
+        method: "DELETE",
+    });
+    const data = await res.json();
+    if(!data.success) return {success: false, message: data.message};
+
+    // use the filter method to delete the current product from the state
+    set(state => ({ books: statebooks.filter(book => book._id !== pid)}));
+  }
 }));

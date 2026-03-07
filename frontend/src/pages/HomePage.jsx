@@ -36,27 +36,30 @@ const HomePage = () => {
           w={"full"}
         >
           {books.map((book) => (
-            <ProductCard key={book._id} book={book}/>
+            <ProductCard key={book._id} book={book} />
           ))}
         </SimpleGrid>
 
-        <Text
-          fontSize="xl"
-          textAlign={"center"}
-          fontWeight="bold"
-          color="gray.500"
-        >
-          No products found ˙◠˙{" "}
-          <Link to={"/create"}>
-            <Text
-              as="span"
-              color="blue.500"
-              _hover={{ textDecoration: "underline" }}
-            >
-              Create a product
-            </Text>
-          </Link>
-        </Text>
+        {/*If there are no books, then the create products will pop up*/}
+        {books.length === 0 && (
+          <Text
+            fontSize="xl"
+            textAlign={"center"}
+            fontWeight="bold"
+            color="gray.500"
+          >
+            No products found ˙◠˙{" "}
+            <Link to={"/create"}>
+              <Text
+                as="span"
+                color="blue.500"
+                _hover={{ textDecoration: "underline" }}
+              >
+                Create a product
+              </Text>
+            </Link>
+          </Text>
+        )}
       </VStack>
     </Container>
   );
