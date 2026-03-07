@@ -1,8 +1,16 @@
-import React from "react";
-import { Container, Text, VStack } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import { Box, Container, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { useProductStore } from "@/store/book";
 
 const HomePage = () => {
+  const { fetchBooks, books } = useProductStore();
+
+  useEffect(() => {
+    fetchBooks();
+  }, [fetchBooks]);
+  console.log("books", books);
+
   return (
     <Container maxW="container.xl" py={12}>
       <VStack gap={8}>
@@ -16,6 +24,16 @@ const HomePage = () => {
         >
           Current Books 📖
         </Text>
+
+        <SimpleGrid
+          columns={{
+            base: 1,
+            md: 2,
+            lg: 3,
+          }}
+          gap={10}
+          w={"full"}
+        ></SimpleGrid>
 
         <Text
           fontSize="xl"
