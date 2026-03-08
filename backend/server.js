@@ -4,7 +4,9 @@ import path from "path";
 import { connectDB } from "./config/db.js";
 import productRoutes from "./routes/productRoute.js";
 
-dotenv.config();
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config();
+}
 
 const app = express();
 const PORT = process.env.PORT || 5000;
