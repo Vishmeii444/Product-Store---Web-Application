@@ -1,10 +1,10 @@
 import express from "express";
-import dotenv from "dotenv";
 import path from "path";
 import { connectDB } from "./config/db.js";
 import productRoutes from "./routes/productRoute.js";
 
 if (process.env.NODE_ENV !== "production") {
+  const { default: dotenv } = await import("dotenv");
   dotenv.config();
 }
 
@@ -15,7 +15,6 @@ const __dirname = path.resolve();
 app.use(express.json());
 app.use("/api/products", productRoutes);
 
-// Serve frontend in production
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/frontend/dist")));
   app.get("*splat", (req, res) => {
@@ -23,7 +22,11 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.listen(PORT, () => {
-  connectDB();
-  console.log(`Server started at http://localhost:${PORT}`);
+// Connect to DB first, then start server
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server started at http://localhost:${PORT}`);
+  });
 });
+
+export default app;
